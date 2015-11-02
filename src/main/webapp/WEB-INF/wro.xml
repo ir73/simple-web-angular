@@ -1,0 +1,31 @@
+<groups xmlns="http://www.isdc.ro/wro">
+
+    <group name="all">
+        <css>webjar:ui-bootstrap-csp.css</css>
+        <css>/common/common.css</css>
+        <js>webjar:2.1.4/dist/jquery.js</js>
+        <js>webjar:bootstrap.js</js>
+        <js>webjar:angular.js</js>
+        <js>webjar:ui-bootstrap.js</js>
+        <js>webjar:ui-bootstrap-tpls.js</js>
+        <js>webjar:angular-resource.js</js>
+        <js>webjar:angular-cookies.js</js>
+        <js>webjar:angular-translate.js</js>
+        <js>webjar:angular-translate-storage-cookie.js</js>
+        <js>webjar:angular-translate-storage-local.js</js>
+        <js>webjar:angular-translate-loader-url.js</js>
+        <js>/common/common.js</js>
+    </group>
+
+    <group name="login">
+        <group-ref>all</group-ref>
+        <js>/login/login.js</js>
+        <css>/login/login.css</css>
+    </group>
+
+    <group name="home">
+        <group-ref>all</group-ref>
+        <js>/home/home.js</js>
+        <css>/home/home.css</css>
+    </group>
+</groups>

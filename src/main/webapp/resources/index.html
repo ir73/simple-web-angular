@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+    <title translate="login.title"></title>
+    <link href="/bootstrap/css/bootstrap.css"
+          rel="stylesheet"></link>
+    <link href="wro/login.css"
+          rel="stylesheet"></link>
+
+    <style type="text/css">
+        [ng\:cloak], [ng-cloak], .ng-cloak {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body ng-app="login"
+      ng-cloak=""
+      class="ng-cloak">
+
+<div ng-controller="LoginCtrl"
+        class="container">
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-4">
+            <div class="alert alert-danger"
+                 ng-show="hasError"
+                 translate="login.error.login">
+            </div>
+            <form role="form"
+                  ng-submit="login()">
+                <div class="form-group">
+                    <label for="username"
+                            translate="login.username"></label>
+                    <input type="text"
+                           class="form-control" id="username" name="username" ng-model="loginInfo.username"/>
+                </div>
+                <div class="form-group">
+                    <label for="password"
+                            translate="login.password"></label>
+                    <input type="password"
+                           class="form-control" id="password" name="password" ng-model="loginInfo.password"/>
+                </div>
+                <button type="submit" class="btn btn-primary"
+                        translate="login.btn_submit"></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="wro/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+    <title translate="home.title"></title>
+    <link href="/bootstrap/css/bootstrap.css"
+          rel="stylesheet"></link>
+    <link href="wro/home.css"
+          rel="stylesheet"></link>
+
+    <style type="text/css">
+        [ng\:cloak], [ng-cloak], .ng-cloak {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body ng-app="home"
+      ng-cloak=""
+      class="ng-cloak">
+
+<script type="text/ng-template" id="add_customer.html">
+    <div class="modal-header">
+        <h3 class="modal-title"
+                translate="home.add_customer.title"></h3>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <label for="firstname"
+                       translate="home.customers.firstname"></label>
+                <input type="text"
+                       class="form-control"
+                       id="firstname"
+                       name="firstname"
+                       ng-model="customer.firstName"/>
+            </div>
+            <div class="form-group">
+                <label for="lastname"
+                       translate="home.customers.lastname"></label>
+                <input type="text"
+                       class="form-control"
+                       id="lastname"
+                       name="lastname"
+                       ng-model="customer.lastName"/>
+            </div>
+            <div class="form-group">
+                <label for="dateofbirth"
+                       translate="home.customers.dateofbirth"></label>
+                <input type="text"
+                       class="form-control"
+                       id="dateofbirth"
+                       name="dateofbirth"
+                       date-input=""
+                       ng-model="customer.dateOfBirth"/>
+            </div>
+            <div class="form-group">
+                <label for="username"
+                       translate="home.customers.username"></label>
+                <input type="text"
+                       class="form-control"
+                       id="username"
+                       name="username"
+                       ng-model="customer.username"/>
+            </div>
+            <div class="form-group">
+                <label for="password"
+                       translate="home.customers.password"></label>
+                <input type="text"
+                       class="form-control"
+                       id="password"
+                       name="password"
+                       ng-model="customer.password"/>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+
+
+<div ng-controller="HomeCtrl"
+     class="container">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="alert alert-danger"
+                 ng-show="error">
+                {{error}}
+            </div>
+
+            <div class="alert alert-success"
+                 ng-show="success">
+                {{success}}
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th translate="home.customers.index"></th>
+                        <th translate="home.customers.firstname"></th>
+                        <th translate="home.customers.lastname"></th>
+                        <th translate="home.customers.dateofbirth"></th>
+                        <th translate="home.customers.username"></th>
+                        <th translate="home.customers.password"></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="customer in customers">
+                        <td>{{$index}}</td>
+                        <td><a href="" ng-click="onCustomerClick(customer)">{{customer.firstName}}</a></td>
+                        <td>{{customer.lastName}}</td>
+                        <td>{{customer.dateOfBirth | date:"dd/MM/yyyy"}}</td>
+                        <td>{{customer.username}}</td>
+                        <td translate="home.password.hidden"></td>
+                        <td translate="home.actions.delete" ng-click="onCustomerDeleteClick(customer)" class="handCursor"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button type="button"
+                    class="btn btn-default"
+                    translate="home.btn_add"
+                    ng-click="onAddClick()"></button>
+
+
+        </div>
+    </div>
+</div>
+
+<script src="wro/home.js"></script>
+</body>
+</html>
