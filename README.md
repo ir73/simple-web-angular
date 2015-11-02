@@ -13,6 +13,12 @@ In order to login, use the following credentials:
 
 > Password: bob
 
+In order to deploy to a different servlet container, such as Tomcat, just run
+
+> mvn clean install
+
+And grab the `simplewebangular.war` file from target directory.
+
 ### Technology stack
 
 The web app uses the following technology stack:
