@@ -11,7 +11,7 @@
     </parent>
 
 	<artifactId>simple-backend</artifactId>
-	<name>Simple web angular</name>
+	<name>Simple backend</name>
 	<packaging>war</packaging>
 	
 	<properties>

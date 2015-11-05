@@ -11,7 +11,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <name>Frontend Plugins</name>
+    <name>Simple web angular</name>
 
     <url>https://github.com/ir73/simple-web-angular</url>
     <licenses>
