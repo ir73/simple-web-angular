@@ -21,7 +21,7 @@ module.exports = function(grunt) {
             src: 'src/main/javascript',
             src_test: 'src/test/javascript',
             dist: 'build',
-            dist_js: '<%= app.dist %>/js',
+            dist_js: '<%= app.dist %>/static/js',
         },
 
         clean: {
@@ -31,8 +31,8 @@ module.exports = function(grunt) {
 
         jshint: {
             files: ['Gruntfile.js',
-                '<%= app.src %>/*.js',
-                '<%= app.src_test %>/*.js']
+                '<%= app.src %>/**/*.js',
+                '<%= app.src_test %>/**/*.js']
         },
 
         concat: {

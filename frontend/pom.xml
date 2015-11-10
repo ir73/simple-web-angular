@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.sapppadev</groupId>
+        <groupId>com.sappadev</groupId>
         <artifactId>simple-web-angular</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>frontend</artifactId>
+    <artifactId>simple-frontend</artifactId>
     <name>Simple frontend</name>
     <packaging>jar</packaging>
 
@@ -51,7 +51,6 @@
                 <version>0.0.26</version>
 
                 <configuration>
-                    <!--<workingDirectory>src/main/frontend</workingDirectory>-->
                     <installDirectory>target</installDirectory>
                     <arguments>${target.environment}</arguments>
                 </configuration>
@@ -110,11 +109,6 @@
                 </executions>
             </plugin>
 
-
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven</groupId>-->
-                <!--<artifactId>maven-assembly-plugin</artifactId>-->
-            <!--</plugin>-->
         </plugins>
     </build>
 
