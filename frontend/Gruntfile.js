@@ -18,10 +18,9 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         app: {
-            src: 'src/main/javascript',
-            src_test: 'src/test/javascript',
+            src: 'src/main/',
+            src_test: 'src/test/',
             dist: 'build',
-            dist_js: '<%= app.dist %>/static/js',
         },
 
         clean: {
@@ -31,8 +30,8 @@ module.exports = function(grunt) {
 
         jshint: {
             files: ['Gruntfile.js',
-                '<%= app.src %>/**/*.js',
-                '<%= app.src_test %>/**/*.js']
+                '<%= app.src %>/javascript/**/*.js',
+                '<%= app.src_test %>/javascript/**/*.js']
         },
 
         concat: {
@@ -43,7 +42,7 @@ module.exports = function(grunt) {
             },
             dist: {
                 files: {
-                    '<%= app.dist_js %>/plugins.js': pluginFiles.minFiles
+                    '<%= app.dist %>/static/js/plugins.js': pluginFiles.minFiles
                 }
             },
             dev: {
@@ -52,10 +51,10 @@ module.exports = function(grunt) {
                     stripBanners: true,
                 },
                 files: {
-                    '<%= app.dist_js %>/plugins.js': pluginFiles.normalFiles,
+                    '<%= app.dist %>/static/js/plugins.js': pluginFiles.normalFiles,
 
-                    '<%= app.dist_js %>/app.js': [
-                        '<%= app.src %>/**/*.js'
+                    '<%= app.dist %>/static/js/app.js': [
+                        '<%= app.src %>/javascript/**/*.js'
                     ]
                 }
             }
@@ -71,9 +70,51 @@ module.exports = function(grunt) {
                     sourceMap: true,
                 },
                 files: {
-                    '<%= app.dist_js %>/app.js': [
-                        '<%= app.src %>/**/*.js'
+                    '<%= app.dist %>/static/js/app.js': [
+                        '<%= app.src %>/javascript/**/*.js'
                     ]
+                }
+            }
+        },
+
+        copy: {
+            dist: {
+                files: [{
+                    cwd: "<%= app.src %>/assets",
+                    expand: true,
+                    src: ['**'],
+                    dest: '<%= app.dist %>/static'
+                }]
+            }
+        },
+
+        watch: {
+            options: {
+                spawn: false,
+                livereload: {
+                    host: 'localhost',
+                    port: 9000,
+                }
+            },
+            copy: {
+                files: ["<%= app.src %>/assets/**"],
+                tasks: ["copy"],
+            },
+            scripts: {
+                files: ["<%= app.src %>/javascript/**"],
+                tasks: ["concat:dev"],
+            }
+        },
+
+        connect: {
+            server: {
+                options: {
+                    port: 4000,
+                    base: "<%= app.dist %>",
+                    hostname: '*',
+                    open: "http://localhost:4000",
+                    livereload: true,
+                    debug: true
                 }
             }
         }
@@ -82,12 +123,18 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-autoprefixer');
 
-    grunt.registerTask('build', ['clean', 'jshint', 'concat:dev', 'uglify:dev']);
-    grunt.registerTask('dist', ['clean', 'jshint', 'concat:dist', 'uglify:dist']);
+    grunt.registerTask('build', ['clean', 'jshint', 'copy', 'concat:dev', 'uglify:dev']);
+    grunt.registerTask('dist', ['clean', 'jshint', 'copy', 'concat:dist', 'uglify:dist']);
+
+    grunt.registerTask('watch', ['build', 'watch']);
+    grunt.registerTask('connect', ['connect']);
 
     grunt.registerTask('default', ['build']);
 };
