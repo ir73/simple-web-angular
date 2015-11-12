@@ -91,10 +91,7 @@ module.exports = function(grunt) {
         watch: {
             options: {
                 spawn: false,
-                livereload: {
-                    host: 'localhost',
-                    port: 9000,
-                }
+                livereload: true
             },
             copy: {
                 files: ["<%= app.src %>/assets/**"],
@@ -110,10 +107,10 @@ module.exports = function(grunt) {
             server: {
                 options: {
                     port: 4000,
-                    base: "<%= app.dist %>",
+                    base: "<%= app.dist %>/static",
                     hostname: '*',
                     open: "http://localhost:4000",
-                    livereload: true,
+                    livereload: false,
                     debug: true
                 }
             }
@@ -130,11 +127,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-autoprefixer');
 
-    grunt.registerTask('build', ['clean', 'jshint', 'copy', 'concat:dev', 'uglify:dev']);
-    grunt.registerTask('dist', ['clean', 'jshint', 'copy', 'concat:dist', 'uglify:dist']);
-
-    grunt.registerTask('watch', ['build', 'watch']);
-    grunt.registerTask('connect', ['connect']);
+    grunt.registerTask('build', "Builds in debug mode: non-minimized and non-uglified, but concatenated js",
+        ['clean', 'jshint', 'copy', 'concat:dev', 'uglify:dev']);
+    grunt.registerTask('dist', "Builds in the release mode: minimizes and uglifies js",
+        ['clean', 'jshint', 'copy', 'concat:dist', 'uglify:dist']);
+    grunt.registerTask('run', "Builds in debug mode, runs local web server on port 9000, starts watching for file modifications",
+        ['build', 'connect', 'watch']);
 
     grunt.registerTask('default', ['build']);
 };
