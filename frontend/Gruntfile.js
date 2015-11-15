@@ -38,7 +38,15 @@ module.exports = function(grunt) {
                 cssDest: '<%= app.dist %>/static/css/plugins_bower.css',
                 mainFiles: {
                     bootstrap: [ 'dist/css/bootstrap.min.css',
-                        'dist/js/bootstrap.min.js' ]
+                        'dist/js/bootstrap.min.js' ],
+                    "angular-bootstrap": [ 'ui-bootstrap.min.js',
+                        'ui-bootstrap-tpls.min.js',
+                        'ui-bootstrap-csp.css']
+                },
+                dependencies: {
+                    'bootstrap': 'jquery',
+                    'angular': 'jquery',
+                    'angular-bootstrap': 'bootstrap',
                 }
             }
         },
