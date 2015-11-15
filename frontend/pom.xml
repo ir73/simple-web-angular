@@ -17,15 +17,15 @@
     <profiles>
         <profile>
             <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <target.environment>build</target.environment>
             </properties>
         </profile>
         <profile>
             <id>dist</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <target.environment>dist</target.environment>
             </properties>

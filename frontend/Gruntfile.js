@@ -83,7 +83,7 @@ module.exports = function(grunt) {
                 files: ["<%= app.src %>/js/**",
                     "<%= app.src %>/css/**"
                 ],
-                tasks: ["concat:res"],
+                tasks: ["copy:res"],
             }
         },
 
