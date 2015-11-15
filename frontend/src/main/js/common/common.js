@@ -43,7 +43,7 @@
                         return (dd[1]?dd:"0"+dd[0]) + "/" + (mm[1]?mm:"0"+mm[0]) + "/" + yyyy;
                     });
                 }
-            }
+            };
         })
 
         .factory("AuthService", ["$http", "$resource", "$log", function ($http, $resource, $log) {
@@ -51,9 +51,9 @@
             return {
                 getUserInfo: function(credentials) {
                     var headers = credentials ? {
-                        authorization : "Basic "
-                        + btoa(credentials.username + ":"
-                            + credentials.password)
+                        authorization : "Basic " +
+                            btoa(credentials.username + ":" +
+                            credentials.password)
                     } : {};
 
                     var User = $resource('/user', {}, {

@@ -1,11 +1,16 @@
 <!doctype html>
 <html>
 <head>
+    <base href="/" />
+
     <title translate="home.title"></title>
-    <link href="/bootstrap/css/bootstrap.css"
-          rel="stylesheet"></link>
-    <link href="wro/home.css"
-          rel="stylesheet"></link>
+
+    <link href="css/plugins_bower.css" rel="stylesheet"></link>
+
+    <!-- build:css css/home.css -->
+    <link href="css/common/common.css" rel="stylesheet"></link>
+    <link href="css/home/home.css" rel="stylesheet"></link>
+    <!-- endbuild -->
 
     <style type="text/css">
         [ng\:cloak], [ng-cloak], .ng-cloak {
@@ -130,6 +135,11 @@
     </div>
 </div>
 
-<script src="wro/home.js"></script>
+<script src="js/plugins_bower.js"></script>
+<!-- build:js js/home.js -->
+<script src="js/common/common.js"></script>
+<script src="js/home/home.js"></script>
+<!-- endbuild -->
+
 </body>
 </html>

@@ -20,7 +20,6 @@
 		<org.slf4j-version>1.7.12</org.slf4j-version>
 		<org.aspectj-version>1.8.1</org.aspectj-version>
 		<org.hibernate-version>5.0.3.Final</org.hibernate-version>
-		<wro4j.version>1.7.9</wro4j.version>
 	</properties>
 	<dependencies>
 
@@ -125,19 +124,6 @@
 			</exclusions>
 		</dependency>
 
-		<!-- wro -->
-		<dependency>
-			<groupId>ro.isdc.wro4j</groupId>
-			<artifactId>wro4j-core</artifactId>
-			<version>${wro4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>ro.isdc.wro4j</groupId>
-			<artifactId>wro4j-extensions</artifactId>
-			<version>${wro4j.version}</version>
-		</dependency>
-
-
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -161,6 +147,12 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
 			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
 		</dependency>
 
 		<!-- Servlet -->

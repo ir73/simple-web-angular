@@ -8,7 +8,7 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- map all resources to the context root -->
-	<mvc:resources mapping="/**" location="/resources/,/static/" />
+	<mvc:resources mapping="/**" location="/static/" />
 
 	<!-- by default open index.html page -->
 	<mvc:view-controller path="/" view-name="redirect:/index.html"/>

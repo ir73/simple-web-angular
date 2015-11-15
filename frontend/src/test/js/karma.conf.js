@@ -3,10 +3,10 @@ module.exports = function(config) {
         basePath: '../../..',
         frameworks: ['jasmine'],
         files: [
-            'src/main/javascript/*.js',
-            'src/test/javascript/*.js'
+            'src/main/js/*.js',
+            'src/test/js/*.js'
         ],
-        exclude: ['src/test/javascript/karma.conf*.js'],
+        exclude: ['src/test/js/karma.conf*.js'],
         reporters: ['progress'],
         port: 9876,
         logLevel: config.LOG_INFO,

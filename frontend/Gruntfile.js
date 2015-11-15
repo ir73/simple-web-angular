@@ -1,84 +1,58 @@
 module.exports = function(grunt) {
 
-    var pluginFiles = {
-        prefixPaths: [
-            'bower_components/jquery/dist/jquery',
-            'bower_components/angular/angular',
-        ],
-        minFiles: [],
-        normalFiles: []
+    var appConfig = {
+        src: 'src/main',
+        src_test: 'src/test',
+        dist: 'build',
     };
-
-    for (var i in pluginFiles.prefixPaths) {
-        pluginFiles.minFiles.push(pluginFiles.prefixPaths[i] + ".min.js");
-        pluginFiles.normalFiles.push(pluginFiles.prefixPaths[i] + ".js");
-    }
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        app: {
-            src: 'src/main/',
-            src_test: 'src/test/',
-            dist: 'build',
-        },
+        app: appConfig,
 
         clean: {
-            dist: ['.tmp',
-                '<%= app.dist %>']
+            all: [
+                '.tmp',
+                '<%= app.dist %>'
+            ]
         },
 
         jshint: {
             files: ['Gruntfile.js',
-                '<%= app.src %>/javascript/**/*.js',
-                '<%= app.src_test %>/javascript/**/*.js']
+                '<%= app.src %>/js/**/*.js',
+                '<%= app.src_test %>/js/**/*.js']
         },
 
-        concat: {
-            options: {
-                separator: "\n/*\n * separator\n */\n",
-                banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-                        '<%= grunt.template.today("yyyy-mm-dd") %> */',
-            },
-            dist: {
-                files: {
-                    '<%= app.dist %>/static/js/plugins.js': pluginFiles.minFiles
-                }
-            },
+        bower_concat: {
             dev: {
-                options: {
-                    sourceMap: true,
-                    stripBanners: true,
-                },
-                files: {
-                    '<%= app.dist %>/static/js/plugins.js': pluginFiles.normalFiles,
-
-                    '<%= app.dist %>/static/js/app.js': [
-                        '<%= app.src %>/javascript/**/*.js'
-                    ]
+                dest: '<%= app.dist %>/static/js/plugins_bower.js',
+                cssDest: '<%= app.dist %>/static/css/plugins_bower.css',
+                mainFiles: {
+                    bootstrap: [ 'dist/css/bootstrap.css',
+                        'dist/js/bootstrap.js' ]
                 }
-            }
-        },
-
-
-        uglify: {
-            dev: {},
-
+            },
             dist: {
-                options: {
-                    preserveComments: false,
-                    sourceMap: true,
-                },
-                files: {
-                    '<%= app.dist %>/static/js/app.js': [
-                        '<%= app.src %>/javascript/**/*.js'
-                    ]
+                dest: '<%= app.dist %>/static/js/plugins_bower.js',
+                cssDest: '<%= app.dist %>/static/css/plugins_bower.css',
+                mainFiles: {
+                    bootstrap: [ 'dist/css/bootstrap.min.css',
+                        'dist/js/bootstrap.min.js' ]
                 }
             }
         },
 
         copy: {
-            dist: {
+            res: {
+                files: [{
+                    cwd: "<%= app.src %>",
+                    expand: true,
+                    src: ['css/**', 'js/**'],
+                    dest: '<%= app.dist %>/static'
+                }]
+            },
+            assets: {
                 files: [{
                     cwd: "<%= app.src %>/assets",
                     expand: true,
@@ -93,13 +67,15 @@ module.exports = function(grunt) {
                 spawn: false,
                 livereload: true
             },
-            copy: {
+            copyAssets: {
                 files: ["<%= app.src %>/assets/**"],
-                tasks: ["copy"],
+                tasks: ["copy:assets"],
             },
-            scripts: {
-                files: ["<%= app.src %>/javascript/**"],
-                tasks: ["concat:dev"],
+            jsAndCss: {
+                files: ["<%= app.src %>/js/**",
+                    "<%= app.src %>/css/**"
+                ],
+                tasks: ["concat:res"],
             }
         },
 
@@ -114,25 +90,48 @@ module.exports = function(grunt) {
                     debug: true
                 }
             }
+        },
+
+        useminPrepare: {
+            options: {
+                dest: '<%= app.dist %>/static',
+                root: '<%= app.src %>'
+            },
+            html: '<%= app.src %>/assets/**/*.*'
+        },
+
+        usemin: {
+            html: ['<%= app.dist %>/static/**/*.*']
         }
 
     });
 
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-connect');
-    grunt.loadNpmTasks('grunt-autoprefixer');
+    require('load-grunt-tasks')(grunt);
 
-    grunt.registerTask('build', "Builds in debug mode: non-minimized and non-uglified, but concatenated js",
-        ['clean', 'jshint', 'copy', 'concat:dev', 'uglify:dev']);
-    grunt.registerTask('dist', "Builds in the release mode: minimizes and uglifies js",
-        ['clean', 'jshint', 'copy', 'concat:dist', 'uglify:dist']);
-    grunt.registerTask('run', "Builds in debug mode, runs local web server on port 9000, starts watching for file modifications",
-        ['build', 'connect', 'watch']);
+    grunt.registerTask('dist',
+        ['clean',
+            'useminPrepare',
+            'jshint',
+            'copy:assets',
+            'bower_concat:dist',
+            'concat',
+            'uglify',
+            'cssmin',
+            'usemin']);
+
+    grunt.registerTask('build',
+        ['clean',
+            'jshint',
+            'copy:assets',
+            'copy:res',
+            'bower_concat:dev']);
+
+    grunt.registerTask('run',
+        "Builds in debug mode, runs local web server on port 9000, starts watching for file modifications",
+        ['build',
+            'connect',
+            'watch']);
+
 
     grunt.registerTask('default', ['build']);
 };

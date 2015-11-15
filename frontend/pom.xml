@@ -102,7 +102,7 @@
                             <goal>karma</goal>
                         </goals>
                         <configuration>
-                            <karmaConfPath>src/test/javascript/karma.conf.ci.js</karmaConfPath>
+                            <karmaConfPath>src/test/js/karma.conf.ci.js</karmaConfPath>
                         </configuration>
                     </execution>
 

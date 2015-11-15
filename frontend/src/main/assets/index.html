@@ -1,11 +1,16 @@
 <!doctype html>
 <html>
 <head>
+    <base href="/" />
+
     <title translate="login.title"></title>
-    <link href="/bootstrap/css/bootstrap.css"
-          rel="stylesheet"></link>
-    <link href="wro/login.css"
-          rel="stylesheet"></link>
+
+    <link href="css/plugins_bower.css" rel="stylesheet"></link>
+
+    <!-- build:css css/login.css -->
+    <link href="css/common/common.css" rel="stylesheet"></link>
+    <link href="css/login/login.css" rel="stylesheet"></link>
+    <!-- endbuild -->
 
     <style type="text/css">
         [ng\:cloak], [ng-cloak], .ng-cloak {
@@ -47,6 +52,11 @@
     </div>
 </div>
 
-<script src="wro/login.js"></script>
+<script src="js/plugins_bower.js"></script>
+<!-- build:js js/login.js -->
+<script src="js/common/common.js"></script>
+<script src="js/login/login.js"></script>
+<!-- endbuild -->
+
 </body>
 </html>
