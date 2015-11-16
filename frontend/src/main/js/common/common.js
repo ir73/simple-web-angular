@@ -75,8 +75,7 @@
         .factory('apiBaseUrlAppender', ["API_SERVER_URL", function(API_SERVER_URL) {
             return {
                 request: function(config) {
-                    if (config.url.indexOf("api/") == 0
-                        || config.url.indexOf("/api/") == 0) {
+                    if (config.url.indexOf("api/") === 0 || config.url.indexOf("/api/") === 0) {
                         config.url = API_SERVER_URL + config.url;
                     }
                     return config;
