@@ -42,7 +42,7 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 	@Test
 	@WithMockUser(roles = "USER")
 	public void testGetAllCustomers() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/customers/"))
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/customers/"))
 			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$[0].firstName", Matchers.is("Sergei")))
@@ -54,7 +54,7 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 
 	@Test
 	public void testGetAllCustomers_unauthorized() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/customers/"))
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/customers/"))
 			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isUnauthorized())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.response", Matchers.is("ERROR")))
@@ -75,7 +75,7 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 		req.setPassword("New password");
 		req.setUsername("New username");
 
-		mockMvc.perform(MockMvcRequestBuilders.put("/customers/" + 2)
+		mockMvc.perform(MockMvcRequestBuilders.put("/api/customers/" + 2)
 											  .content(mapper.writeValueAsString(req))
 											  .contentType(MediaType.APPLICATION_JSON))
 			   .andDo(MockMvcResultHandlers.print())
@@ -115,7 +115,7 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 		req.setPassword("New password");
 		req.setUsername("New username");
 
-		mockMvc.perform(MockMvcRequestBuilders.put("/customers/" + 2)
+		mockMvc.perform(MockMvcRequestBuilders.put("/api/customers/" + 2)
 											  .content(mapper.writeValueAsString(req))
 											  .contentType(MediaType.APPLICATION_JSON))
 			   .andDo(MockMvcResultHandlers.print())
@@ -151,7 +151,7 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 		req.setPassword("New password1");
 		req.setUsername("New username1");
 
-		mockMvc.perform(MockMvcRequestBuilders.post("/customers/")
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/customers/")
 											  .content(mapper.writeValueAsString(req))
 											  .contentType(MediaType.APPLICATION_JSON))
 			   .andDo(MockMvcResultHandlers.print())
@@ -189,7 +189,7 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 		req.setPassword("New password1");
 		req.setUsername("New username1");
 
-		mockMvc.perform(MockMvcRequestBuilders.post("/customers/")
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/customers/")
 											  .content(mapper.writeValueAsString(req))
 											  .contentType(MediaType.APPLICATION_JSON))
 			   .andDo(MockMvcResultHandlers.print())
@@ -207,7 +207,7 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 	@WithMockUser("sergeil")
 	public void testDeleteCustomer() throws Exception {
 
-		mockMvc.perform(MockMvcRequestBuilders.delete("/customers/" + 2))
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/customers/" + 2))
 			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.response", Matchers.is("OK")));
@@ -221,7 +221,7 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 	@WithMockUser("sergeil")
 	public void testDeleteCustomer_nonExistentId() throws Exception {
 
-		mockMvc.perform(MockMvcRequestBuilders.delete("/customers/" + 2345636))
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/customers/" + 2345636))
 			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isBadRequest())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.response", Matchers.is("ERROR")));

@@ -6,7 +6,7 @@
         .module("home", ["common"])
 
         .factory("CustomerService", ["$resource", function($resource) {
-            var Customer = $resource("/customers/:customerId", {customerId: "@id"}, {
+            var Customer = $resource("api/customers/:customerId", {customerId: "@id"}, {
                 getAll: {
                     method: "GET",
                     isArray: true,

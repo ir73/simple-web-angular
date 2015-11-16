@@ -25,7 +25,7 @@ public class GlobalExceptionHandlerTest extends AbstractContextControllerTests {
 	@WithMockUser("sergeil")
 	public void testHandleException() throws Exception {
 
-		mockMvc.perform(MockMvcRequestBuilders.delete("/customers/" + 2345636))
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/customers/" + 2345636))
 			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isBadRequest())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.response", Matchers.is("ERROR")));
@@ -33,7 +33,7 @@ public class GlobalExceptionHandlerTest extends AbstractContextControllerTests {
 
 	@Test
 	public void testAccessDeniedException() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.delete("/customers/" + 2345636))
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/customers/" + 2345636))
 			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isUnauthorized())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.response", Matchers.is("ERROR")))

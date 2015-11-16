@@ -22,7 +22,7 @@ public class ResourcesController {
         this.customMessageSource = customMessageSource;
     }
 
-    @RequestMapping("/res/messages/")
+    @RequestMapping("/api/res/messages/")
     /**
      * Returns list of all messages to client that are stored in messages.properties
      */

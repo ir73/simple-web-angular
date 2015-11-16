@@ -23,7 +23,7 @@ public class ResourcesControllerTest extends AbstractContextControllerTests {
     @Test
     public void testMessages() throws Exception {
         this.mockMvc.perform(
-                post("/res/messages/")
+                post("/api/res/messages/")
                         .param("lang", "en")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
@@ -34,7 +34,7 @@ public class ResourcesControllerTest extends AbstractContextControllerTests {
     @Test
     public void testMessages_unknownLanguage() throws Exception {
         this.mockMvc.perform(
-                post("/res/messages/")
+                post("/api/res/messages/")
                         .param("lang", "fi")
                         .accept(MediaType.APPLICATION_JSON))
                     .andDo(MockMvcResultHandlers.print())

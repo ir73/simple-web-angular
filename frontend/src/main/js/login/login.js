@@ -19,7 +19,7 @@
                     $scope.isAuthenticated = isAuthenticated;
                     $log.info("is authenticated:", $scope.isAuthenticated);
                     if ($scope.isAuthenticated) {
-                        $window.location = "/home.html";
+                        $window.location = "home.html";
                     }
                 };
 

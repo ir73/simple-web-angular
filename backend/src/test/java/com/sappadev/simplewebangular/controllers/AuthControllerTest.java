@@ -24,7 +24,7 @@ public class AuthControllerTest extends AbstractContextControllerTests {
 
 	@Test
 	public void testUser_unauthorized() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/user"))
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/user"))
 			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isUnauthorized())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.response", Matchers.is("ERROR")))
@@ -34,7 +34,7 @@ public class AuthControllerTest extends AbstractContextControllerTests {
 	@WithMockUser("sergeil")
 	@Test
 	public void testUser_success() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/user"))
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/user"))
 			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.response", Matchers.is("OK")))

@@ -4,9 +4,11 @@
     angular
         .module("common", ["ngResource", "ngCookies", "pascalprecht.translate", "ui.bootstrap"])
 
+        .constant("API_SERVER_URL", "http://localhost:8080/")
+
         .config(["$translateProvider", "$httpProvider", function($translateProvider){
             $translateProvider.useCookieStorage(true);
-            $translateProvider.useUrlLoader("/res/messages/");
+            $translateProvider.useUrlLoader("api/res/messages/");
             $translateProvider.fallbackLanguage("en");
             $translateProvider.preferredLanguage("en");
             $translateProvider.useSanitizeValueStrategy('escapeParameters');
@@ -15,6 +17,7 @@
         .config(["$httpProvider", function($httpProvider){
             $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
             $httpProvider.interceptors.push("errorInterceptor");
+            $httpProvider.interceptors.push('apiBaseUrlAppender');
         }])
 
         .config(["$resourceProvider", function($resourceProvider){
@@ -56,7 +59,7 @@
                             credentials.password)
                     } : {};
 
-                    var User = $resource('/user', {}, {
+                    var User = $resource('api/user', {}, {
                         'getUserInfo': {
                             method: "GET",
                             commonErrorHandler: false,
@@ -65,6 +68,18 @@
                     });
 
                     return User.getUserInfo().$promise;
+                }
+            };
+        }])
+
+        .factory('apiBaseUrlAppender', ["API_SERVER_URL", function(API_SERVER_URL) {
+            return {
+                request: function(config) {
+                    if (config.url.indexOf("api/") == 0
+                        || config.url.indexOf("/api/") == 0) {
+                        config.url = API_SERVER_URL + config.url;
+                    }
+                    return config;
                 }
             };
         }])

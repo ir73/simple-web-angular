@@ -18,7 +18,7 @@ import java.util.Collection;
 public class AuthController {
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping("/user")
+    @RequestMapping("/api/user")
     /**
      * Handles user request and replies with logged in information such as
      * roles and user's user name

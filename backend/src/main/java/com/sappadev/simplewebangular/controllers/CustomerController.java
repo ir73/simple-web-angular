@@ -37,25 +37,22 @@ public class CustomerController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(value = "/customers/", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/customers/", method = RequestMethod.GET)
     public List<CustomerDTO> getAllCustomers() {
         LOGGER.debug("Loading all customers...");
         return customerService.getAllCustomers();
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(value = "/customers/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/customers/{id}", method = RequestMethod.PUT)
     public ResponseJson saveCustomer(@Valid @RequestBody SaveCustomerRequestJson requestJson,
                                      BindingResult errors,
                                      @PathVariable("id") Long customerId) {
         LOGGER.info("Saving customer:{} / {}", customerId, requestJson);
 
-        if (errors.hasErrors()) {
-            SaveCustomerErrorJson saveCustomerErrorJson = new SaveCustomerErrorJson(ErrorCode.INVALID_INPUT);
-            if (errors.hasFieldErrors()) {
-                saveCustomerErrorJson.field = errors.getFieldError().getField();
-            }
-            return saveCustomerErrorJson;
+        ResponseJson errorJson = handleError(errors);
+        if (errorJson != null) {
+            return errorJson;
         }
 
         if (!customerId.equals(requestJson.getId())) {
@@ -77,17 +74,14 @@ public class CustomerController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(value = "/customers/", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/customers/", method = RequestMethod.POST)
     public ResponseJson createCustomer(@Valid @RequestBody CreateCustomerRequestJson requestJson,
                                      BindingResult errors) {
         LOGGER.info("Creating customer: {}", requestJson);
 
-        if (errors.hasErrors()) {
-            SaveCustomerErrorJson saveCustomerErrorJson = new SaveCustomerErrorJson(ErrorCode.INVALID_INPUT);
-            if (errors.hasFieldErrors()) {
-                saveCustomerErrorJson.field = errors.getFieldError().getField();
-            }
-            return saveCustomerErrorJson;
+        ResponseJson errorJson = handleError(errors);
+        if (errorJson != null) {
+            return errorJson;
         }
 
         CustomerDTO customerDTO = new CustomerDTO();
@@ -103,8 +97,19 @@ public class CustomerController {
         return json;
     }
 
+    private ResponseJson handleError(BindingResult errors) {
+        if (errors.hasErrors()) {
+            SaveCustomerErrorJson saveCustomerErrorJson = new SaveCustomerErrorJson(ErrorCode.INVALID_INPUT);
+            if (errors.hasFieldErrors()) {
+                saveCustomerErrorJson.field = errors.getFieldError().getField();
+            }
+            return saveCustomerErrorJson;
+        }
+        return null;
+    }
+
     @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(value = "/customers/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/customers/{id}", method = RequestMethod.DELETE)
     public ResponseJson deleteCustomer(@PathVariable("id") Long customerId) {
         LOGGER.info("Delete customer: {}", customerId);
         customerService.deleteCustomer(customerId);
