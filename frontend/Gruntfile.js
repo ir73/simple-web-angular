@@ -4,6 +4,30 @@ module.exports = function(grunt) {
         src: 'src/main',
         src_test: 'src/test',
         dist: 'build',
+        tokens: {
+            serverEndpoint: grunt.option('endpoint') || "",
+            contextRoot: grunt.option('context') || "/",
+        }
+    };
+
+    var replaceTokensFn = function (content, srcpath) {
+        var tokenRegex = /\@\[(\w+)\]/g;
+        var match;
+        while ((match = tokenRegex.exec(content)) !== null) {
+            var token = match[0];
+            var tokenName = match[1];
+            var startPos = match.index;
+            var replaceTo = appConfig.tokens[tokenName];
+
+            content = content.substring(0, startPos) +
+                replaceTo +
+                content.substring(startPos + token.length);
+
+            grunt.log.writeln("Replacing [" + tokenName + "] pos:" +
+                startPos + " to '" + replaceTo +
+                "' in [" + srcpath + "]");
+        }
+        return content;
     };
 
     grunt.initConfig({
@@ -52,6 +76,9 @@ module.exports = function(grunt) {
         },
 
         copy: {
+            options: {
+                process: replaceTokensFn
+            },
             res: {
                 files: [{
                     cwd: "<%= app.src %>",
@@ -68,6 +95,12 @@ module.exports = function(grunt) {
                     dest: '<%= app.dist %>/static'
                 }]
             }
+        },
+
+        concat: {
+            options: {
+                process: replaceTokensFn
+            },
         },
 
         watch: {

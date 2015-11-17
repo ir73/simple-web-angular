@@ -4,14 +4,21 @@
     angular
         .module("common", ["ngResource", "ngCookies", "pascalprecht.translate", "ui.bootstrap"])
 
-        .constant("API_SERVER_URL", "http://localhost:8080/")
+        .constant("API_SERVER_URL", "@[serverEndpoint]")
 
         .config(["$translateProvider", "$httpProvider", function($translateProvider){
             $translateProvider.useCookieStorage(true);
-            $translateProvider.useUrlLoader("api/res/messages/");
+            $translateProvider.useUrlLoader("/api/res/messages/");
             $translateProvider.fallbackLanguage("en");
             $translateProvider.preferredLanguage("en");
             $translateProvider.useSanitizeValueStrategy('escapeParameters');
+        }])
+
+        .config(["$sceDelegateProvider", function($sceDelegateProvider) {
+            $sceDelegateProvider.resourceUrlWhitelist([
+                'self',
+                '@[serverEndpoint]/**'
+            ]);
         }])
 
         .config(["$httpProvider", function($httpProvider){
@@ -59,7 +66,7 @@
                             credentials.password)
                     } : {};
 
-                    var User = $resource('api/user', {}, {
+                    var User = $resource('/api/user', {}, {
                         'getUserInfo': {
                             method: "GET",
                             commonErrorHandler: false,
@@ -75,7 +82,7 @@
         .factory('apiBaseUrlAppender', ["API_SERVER_URL", function(API_SERVER_URL) {
             return {
                 request: function(config) {
-                    if (config.url.indexOf("api/") === 0 || config.url.indexOf("/api/") === 0) {
+                    if (config.url.indexOf("/api/") === 0) {
                         config.url = API_SERVER_URL + config.url;
                     }
                     return config;
