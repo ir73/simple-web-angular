@@ -10,6 +10,12 @@ module.exports = function(grunt) {
         }
     };
 
+    /**
+     * Replaces all tokens in a format of "@[token]" in the content
+     * string
+     * @param content   A content (String)
+     * @param srcpath   A path to a file (String)
+     */
     var replaceTokensFn = function (content, srcpath) {
         var tokenRegex = /\@\[(\w+)\]/g;
         var match;

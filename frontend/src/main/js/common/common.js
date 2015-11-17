@@ -14,13 +14,6 @@
             $translateProvider.useSanitizeValueStrategy('escapeParameters');
         }])
 
-        .config(["$sceDelegateProvider", function($sceDelegateProvider) {
-            $sceDelegateProvider.resourceUrlWhitelist([
-                'self',
-                '@[serverEndpoint]/**'
-            ]);
-        }])
-
         .config(["$httpProvider", function($httpProvider){
             $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
             $httpProvider.interceptors.push("errorInterceptor");
