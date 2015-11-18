@@ -16,6 +16,10 @@
 		<level value="warn" />
 	</logger>
 
+	<logger name="org.hibernate">
+		<level value="warn" />
+	</logger>
+
 	<logger name="ro.isdc.wro">
 		<level value="info"/>
 	</logger>
