@@ -30,22 +30,6 @@ public class DatabaseConfig {
 		return new NamedParameterJdbcTemplate(dataSource);
 	}
 
-//	@Bean
-//	public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
-//		final DataSourceInitializer initializer = new DataSourceInitializer();
-//		initializer.setDataSource(dataSource);
-//		initializer.setDatabasePopulator(databasePopulator());
-//		return initializer;
-//	}
-//
-//	private DatabasePopulator databasePopulator() {
-//		final ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-//		populator.addScript(new FileSystemResource("classpath:/db/sql/create-db.sql"));
-//		populator.addScript(new FileSystemResource("classpath:/db/sql/insert-data.sql"));
-//		return populator;
-//	}
-
-
 	@Bean
 	public DataSource dataSource() {
 		return new EmbeddedDatabaseBuilder()
@@ -53,13 +37,6 @@ public class DatabaseConfig {
 				.addScript("classpath:/db/sql/create-db.sql")
 				.addScript("classpath:/db/sql/insert-data.sql")
                 .build();
-//
-//		BasicDataSource dataSource = new BasicDataSource();
-//		dataSource.setDriverClassName("org.h2.Driver");
-//		dataSource.setUrl(environment.getRequiredProperty("jdbc.url"));
-//		dataSource.setUsername(environment.getRequiredProperty("jdbc.user"));
-//		dataSource.setPassword(environment.getRequiredProperty("jdbc.pwd"));
-//		return dataSource;
 	}
 
 	@Bean
