@@ -2,12 +2,15 @@ package com.sappadev.simplewebangular.conf;
 
 import com.sappadev.simplewebangular.security.BasicJsonEntryPoint;
 import com.sappadev.simplewebangular.services.CustomerService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.annotation.Resource;
 
@@ -32,29 +35,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.httpBasic();
 		http.csrf().disable();
 		http.logout().logoutSuccessUrl("/");
-//		http.addFilterBefore(basicAuthenticationFilter(), BasicAuthenticationFilter.class);
+		http.addFilterBefore(basicAuthenticationFilter(), BasicAuthenticationFilter.class);
 	}
-
-//	@Override
-//	protected AuthenticationManager authenticationManager() throws Exception {
-//		return super.authenticationManager();
-//	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(customerService);
 	}
 
-//	@Override
-//	@Bean
-//	protected AuthenticationManager authenticationManager() throws Exception {
-//		return super.authenticationManager();
-//	}
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
 
-//	@Bean
-//	public BasicAuthenticationFilter basicAuthenticationFilter() throws Exception {
-//		return new BasicAuthenticationFilter(authenticationManager(), basicJsonEntryPoint);
-//	}
+	@Bean
+	/**
+	 * Entry point is required so that we would always get a JSON error instead of
+	 * just an error code
+	 */
+	public BasicAuthenticationFilter basicAuthenticationFilter() throws Exception {
+		return new BasicAuthenticationFilter(authenticationManager(), basicJsonEntryPoint);
+	}
 }
 
 
