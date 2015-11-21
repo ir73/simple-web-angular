@@ -14,6 +14,7 @@
 		<org.aspectj-version>1.8.1</org.aspectj-version>
 		<org.hibernate-version>5.0.3.Final</org.hibernate-version>
 		<wro4j.version>1.7.9</wro4j.version>
+		<project.scm.id>github-scm</project.scm.id>
 	</properties>
 
 	<scm>
