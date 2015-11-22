@@ -1,7 +1,6 @@
 package com.sappadev.simplewebangular.services;
 
 import com.sappadev.AbstractContextControllerTests;
-import com.sappadev.simplewebangular.data.domain.Customer;
 import com.sappadev.simplewebangular.data.dto.CustomerDTO;
 import org.exparity.hamcrest.date.DateMatchers;
 import org.exparity.hamcrest.date.Months;
@@ -10,12 +9,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * user: sergeil
@@ -42,9 +38,9 @@ public class CustomerServiceTest extends AbstractContextControllerTests {
 		Assert.assertThat(customers, Matchers.<CustomerDTO>hasItem(
 				Matchers.allOf(
 						Matchers.hasProperty("id", Matchers.is(1L)),
-						Matchers.hasProperty("firstName", Matchers.is("Sergei")),
-						Matchers.hasProperty("lastName", Matchers.is("Ledvanov")),
-						Matchers.hasProperty("username", Matchers.is("sergeil")),
+						Matchers.hasProperty("firstName", Matchers.is("Mike")),
+						Matchers.hasProperty("lastName", Matchers.is("Wilson")),
+						Matchers.hasProperty("username", Matchers.is("mikew")),
 						Matchers.hasProperty("password", Matchers.is("123")),
 						Matchers.hasProperty("dateOfBirth", DateMatchers.sameDay(1983, Months.JULY, 19))
 				)

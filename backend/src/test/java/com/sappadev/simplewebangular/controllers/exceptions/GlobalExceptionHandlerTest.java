@@ -1,19 +1,12 @@
 package com.sappadev.simplewebangular.controllers.exceptions;
 
 import com.sappadev.AbstractContextControllerTests;
-import com.sappadev.simplewebangular.data.domain.Customer;
-import com.sappadev.simplewebangular.data.dto.CustomerDTO;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * user: sergeil
@@ -22,7 +15,7 @@ import static org.junit.Assert.*;
 public class GlobalExceptionHandlerTest extends AbstractContextControllerTests {
 
 	@Test
-	@WithMockUser("sergeil")
+	@WithMockUser("mikew")
 	public void testHandleException() throws Exception {
 
 		mockMvc.perform(MockMvcRequestBuilders.delete("/api/customers/" + 2345636))
