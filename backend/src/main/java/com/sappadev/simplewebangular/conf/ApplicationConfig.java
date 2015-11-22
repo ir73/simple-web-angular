@@ -16,7 +16,11 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import java.util.Locale;
 
 @Configuration
-@ComponentScan("com.sappadev.simplewebangular")
+@ComponentScan({"com.sappadev.simplewebangular.conf",
+		"com.sappadev.simplewebangular.controllers",
+		"com.sappadev.simplewebangular.data",
+		"com.sappadev.simplewebangular.security",
+		"com.sappadev.simplewebangular.services"})
 @EnableAsync
 @EnableScheduling
 @EnableJpaRepositories(basePackageClasses = {CustomerRepository.class})
