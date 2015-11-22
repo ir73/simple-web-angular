@@ -91,18 +91,6 @@
 		</dependency>
 
 
-		<dependency>
-			<groupId>se.jiderhamn</groupId>
-			<artifactId>classloader-leak-prevention</artifactId>
-			<version>1.15.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.servlet</groupId>
-					<artifactId>servlet-api</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
