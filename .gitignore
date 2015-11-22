@@ -9,3 +9,4 @@ target
 node_modules
 bower_components
 frontend/build
+/frontend/.tmp
