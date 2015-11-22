@@ -15,7 +15,12 @@
         }])
 
         .config(["$httpProvider", function($httpProvider){
-            $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+            //Enable cross domain calls
+            $httpProvider.defaults.useXDomain = true;
+            // make sure JSESSIONID is passed when having frontend deployed to
+            // a different domain rather than server
+            $httpProvider.defaults.withCredentials = true;
+
             $httpProvider.interceptors.push("errorInterceptor");
             $httpProvider.interceptors.push('apiBaseUrlAppender');
         }])
