@@ -19,12 +19,25 @@
 		<org.slf4j-version>1.7.12</org.slf4j-version>
 		<org.hibernate-version>5.0.3.Final</org.hibernate-version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- this is required so we won't need to reference any specific version in
+			     Dependencies section below and in maven-dependency-plugin
+			     -->
+			<dependency>
+				<groupId>com.sappadev</groupId>
+				<artifactId>simple-frontend</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 
 		<dependency>
 			<groupId>com.sappadev</groupId>
 			<artifactId>simple-frontend</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 
 		<!-- Spring -->
@@ -272,7 +285,6 @@
 								<artifactItem>
 									<groupId>com.sappadev</groupId>
 									<artifactId>simple-frontend</artifactId>
-									<version>${project.version}</version>
 									<type>jar</type>
 									<overWrite>true</overWrite>
 									<outputDirectory>${project.build.directory}/generated-resources</outputDirectory>
