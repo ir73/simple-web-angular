@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Calendar;
@@ -40,7 +39,6 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 	@WithMockUser(roles = "USER")
 	public void testGetAllCustomers() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/customers/"))
-			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$[0].firstName", Matchers.is("Mike")))
 			   .andExpect(MockMvcResultMatchers.jsonPath("$[0].lastName", Matchers.is("Wilson")))
@@ -52,7 +50,6 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 	@Test
 	public void testGetAllCustomers_unauthorized() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/customers/"))
-			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isUnauthorized())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.response", Matchers.is("ERROR")))
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.errorCode", Matchers.is("UNAUTHORIZED")));
@@ -75,7 +72,6 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 		mockMvc.perform(MockMvcRequestBuilders.put("/api/customers/" + 2)
 											  .content(mapper.writeValueAsString(req))
 											  .contentType(MediaType.APPLICATION_JSON))
-			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.customer.id", Matchers.is(2)))
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.customer.firstName", Matchers.is("New firstname")))
@@ -115,7 +111,6 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 		mockMvc.perform(MockMvcRequestBuilders.put("/api/customers/" + 2)
 											  .content(mapper.writeValueAsString(req))
 											  .contentType(MediaType.APPLICATION_JSON))
-			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isUnauthorized())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.response", Matchers.is("ERROR")))
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.errorCode", Matchers.is("UNAUTHORIZED")));
@@ -151,7 +146,6 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/customers/")
 											  .content(mapper.writeValueAsString(req))
 											  .contentType(MediaType.APPLICATION_JSON))
-			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.customer.id", Matchers.notNullValue()))
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.customer.firstName", Matchers.is("New firstname1")))
@@ -189,7 +183,6 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/customers/")
 											  .content(mapper.writeValueAsString(req))
 											  .contentType(MediaType.APPLICATION_JSON))
-			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isUnauthorized())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.response", Matchers.is("ERROR")))
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.errorCode", Matchers.is("UNAUTHORIZED")));
@@ -205,7 +198,6 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 	public void testDeleteCustomer() throws Exception {
 
 		mockMvc.perform(MockMvcRequestBuilders.delete("/api/customers/" + 2))
-			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.response", Matchers.is("OK")));
 
@@ -219,7 +211,6 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 	public void testDeleteCustomer_nonExistentId() throws Exception {
 
 		mockMvc.perform(MockMvcRequestBuilders.delete("/api/customers/" + 2345636))
-			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isBadRequest())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.response", Matchers.is("ERROR")));
 

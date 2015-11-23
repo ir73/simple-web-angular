@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 /**
@@ -23,7 +22,6 @@ public class AuthControllerTest extends AbstractContextControllerTests {
 	@Test
 	public void testUser_unauthorized() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/user"))
-			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isUnauthorized())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.response", Matchers.is("ERROR")))
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.errorCode", Matchers.is("UNAUTHORIZED")));
@@ -33,7 +31,6 @@ public class AuthControllerTest extends AbstractContextControllerTests {
 	@Test
 	public void testUser_success() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/user"))
-			   .andDo(MockMvcResultHandlers.print())
 			   .andExpect(MockMvcResultMatchers.status().isOk())
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.response", Matchers.is("OK")))
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.username", Matchers.is("mikew")))
