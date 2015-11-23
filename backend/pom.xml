@@ -184,86 +184,6 @@
 		</dependency>
 
 
-		<!-- webjars -->
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular</artifactId>
-			<version>1.4.7</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular-bootstrap</artifactId>
-			<version>0.14.3</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.webjars.bower</groupId>
-					<artifactId>angular</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular-local-storage</artifactId>
-			<version>0.2.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular-resource</artifactId>
-			<version>1.4.7</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular-toastr</artifactId>
-			<version>1.5.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>use-angular-translate</artifactId>
-			<version>2.7.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular-translate-loader-static-files</artifactId>
-			<version>2.8.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular-translate-loader-url</artifactId>
-			<version>2.8.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular-translate-storage-cookie</artifactId>
-			<version>2.8.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular-translate-storage-local</artifactId>
-			<version>2.8.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>bootstrap</artifactId>
-			<version>3.3.5</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.webjars.bower</groupId>
-					<artifactId>jquery</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular-cookies</artifactId>
-			<version>1.4.7</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>jquery</artifactId>
-			<version>2.1.4</version>
-		</dependency>
-
-
 		<!-- Test -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -352,7 +272,7 @@
 								<artifactItem>
 									<groupId>com.sappadev</groupId>
 									<artifactId>simple-frontend</artifactId>
-									<version>1.1.0-SNAPSHOT</version>
+									<version>${project.version}</version>
 									<type>jar</type>
 									<overWrite>true</overWrite>
 									<outputDirectory>${project.build.directory}/generated-resources</outputDirectory>
