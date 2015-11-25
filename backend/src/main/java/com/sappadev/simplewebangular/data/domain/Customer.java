@@ -26,6 +26,7 @@ public class Customer implements Serializable {
 
     @Column(name = "DateofBirth")
     @Type(type = "date")
+    @Temporal(TemporalType.DATE)
     private Date dateOfBirth;
 
     @Column(name = "Username")
