@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.exparity.hamcrest.date.DateMatchers;
 import org.hamcrest.Matchers;
+import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,9 +40,7 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 	@Test
 	@WithMockUser(roles = "USER")
 	public void testGetAllCustomers() throws Exception {
-		final Calendar cal = Calendar.getInstance();
-		cal.setTimeInMillis(427410000000L);
-		cal.set(1983, Calendar.JULY, 19, 0, 0, 0);
+		final DateTime dateTime = new DateTime(1983, 7, 19, 0, 0, 0, 0);
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/customers/"))
 		       .andExpect(MockMvcResultMatchers.status().isOk())
@@ -50,7 +49,7 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 		       .andExpect(MockMvcResultMatchers.jsonPath("$[0].username", Matchers.is("mikew")))
 		       .andExpect(MockMvcResultMatchers.jsonPath("$[0].password", Matchers.is("123")))
 		       .andExpect(MockMvcResultMatchers.jsonPath("$[0].dateOfBirth",
-		                                                 Matchers.is(cal.getTime().getTime())));
+		                                                 Matchers.is(dateTime.toDate())));
 	}
 
 	@Test
