@@ -1,9 +1,9 @@
 package com.sappadev.simplewebangular.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sappadev.AbstractContextControllerTests;
-import com.sappadev.simplewebangular.data.dto.CustomerDTO;
-import com.sappadev.simplewebangular.services.CustomerService;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import org.exparity.hamcrest.date.DateMatchers;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
@@ -15,9 +15,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sappadev.AbstractContextControllerTests;
+import com.sappadev.simplewebangular.data.dto.CustomerDTO;
+import com.sappadev.simplewebangular.services.CustomerService;
 
 /**
  * user: sergeil
@@ -38,13 +39,17 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 	@Test
 	@WithMockUser(roles = "USER")
 	public void testGetAllCustomers() throws Exception {
+		final Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(427410000000L);
+
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/customers/"))
-			   .andExpect(MockMvcResultMatchers.status().isOk())
-			   .andExpect(MockMvcResultMatchers.jsonPath("$[0].firstName", Matchers.is("Mike")))
-			   .andExpect(MockMvcResultMatchers.jsonPath("$[0].lastName", Matchers.is("Wilson")))
-			   .andExpect(MockMvcResultMatchers.jsonPath("$[0].username", Matchers.is("mikew")))
-			   .andExpect(MockMvcResultMatchers.jsonPath("$[0].password", Matchers.is("123")))
-			   .andExpect(MockMvcResultMatchers.jsonPath("$[0].dateOfBirth", Matchers.is(427410000000L)));
+		       .andExpect(MockMvcResultMatchers.status().isOk())
+		       .andExpect(MockMvcResultMatchers.jsonPath("$[0].firstName", Matchers.is("Mike")))
+		       .andExpect(MockMvcResultMatchers.jsonPath("$[0].lastName", Matchers.is("Wilson")))
+		       .andExpect(MockMvcResultMatchers.jsonPath("$[0].username", Matchers.is("mikew")))
+		       .andExpect(MockMvcResultMatchers.jsonPath("$[0].password", Matchers.is("123")))
+		       .andExpect(MockMvcResultMatchers.jsonPath("$[0].dateOfBirth",
+		                                                 Matchers.is(cal.getTime().getTime())));
 	}
 
 	@Test
