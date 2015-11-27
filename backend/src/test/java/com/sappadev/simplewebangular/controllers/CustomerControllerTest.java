@@ -41,6 +41,7 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 	public void testGetAllCustomers() throws Exception {
 		final Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(427410000000L);
+		cal.set(1983, Calendar.JULY, 19, 0, 0, 0);
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/customers/"))
 		       .andExpect(MockMvcResultMatchers.status().isOk())
