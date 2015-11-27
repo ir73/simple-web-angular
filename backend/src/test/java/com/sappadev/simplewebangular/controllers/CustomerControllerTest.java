@@ -49,7 +49,7 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 		       .andExpect(MockMvcResultMatchers.jsonPath("$[0].username", Matchers.is("mikew")))
 		       .andExpect(MockMvcResultMatchers.jsonPath("$[0].password", Matchers.is("123")))
 		       .andExpect(MockMvcResultMatchers.jsonPath("$[0].dateOfBirth",
-		                                                 Matchers.is(dateTime.toDate())));
+		                                                 Matchers.is(dateTime.toDate().getTime())));
 	}
 
 	@Test
