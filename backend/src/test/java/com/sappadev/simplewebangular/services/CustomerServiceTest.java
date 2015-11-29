@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -61,7 +61,7 @@ public class CustomerServiceTest extends AbstractContextControllerTests {
 	@Test
 	public void testSaveCustomer() throws Exception {
 
-		Date dateOfBirth = new Date();
+		LocalDate dateOfBirth = LocalDate.now();
 
 		CustomerDTO customer = new CustomerDTO();
 		customer.setFirstName("F");
@@ -83,7 +83,7 @@ public class CustomerServiceTest extends AbstractContextControllerTests {
 						Matchers.hasProperty("lastName", Matchers.is("L")),
 						Matchers.hasProperty("username", Matchers.is("U")),
 						Matchers.hasProperty("password", Matchers.is("Pwd")),
-						Matchers.hasProperty("dateOfBirth", DateMatchers.sameDay(dateOfBirth))
+						Matchers.hasProperty("dateOfBirth", Matchers.is(""))
 				)
 		));
 
@@ -91,7 +91,7 @@ public class CustomerServiceTest extends AbstractContextControllerTests {
 
 	@Test
 	public void testCreateCustomer() throws Exception {
-		Date dateOfBirth = new Date();
+		LocalDate dateOfBirth = LocalDate.now();
 
 		CustomerDTO customer = new CustomerDTO();
 		customer.setFirstName("F");
@@ -113,7 +113,7 @@ public class CustomerServiceTest extends AbstractContextControllerTests {
 						Matchers.hasProperty("lastName", Matchers.is("L")),
 						Matchers.hasProperty("username", Matchers.is("U")),
 						Matchers.hasProperty("password", Matchers.is("Pwd")),
-						Matchers.hasProperty("dateOfBirth", DateMatchers.sameDay(dateOfBirth))
+						Matchers.hasProperty("dateOfBirth", Matchers.is(""))
 				)
 		));
 

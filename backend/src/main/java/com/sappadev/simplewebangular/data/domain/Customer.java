@@ -1,10 +1,8 @@
 package com.sappadev.simplewebangular.data.domain;
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "CUSTOMERS")
@@ -25,9 +23,7 @@ public class Customer implements Serializable {
     private String lastName;
 
     @Column(name = "DateofBirth")
-    @Type(type = "date")
-    @Temporal(TemporalType.DATE)
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column(name = "Username")
     private String username;
@@ -59,11 +55,11 @@ public class Customer implements Serializable {
         this.lastName = lastName;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

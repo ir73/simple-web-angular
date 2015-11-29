@@ -1,6 +1,6 @@
 package com.sappadev.simplewebangular.data.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Created by serge_000 on 31.10.2015.
@@ -13,7 +13,7 @@ public class CustomerDTO {
 
     private String lastName;
 
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     private String username;
 
@@ -43,11 +43,11 @@ public class CustomerDTO {
         this.lastName = lastName;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

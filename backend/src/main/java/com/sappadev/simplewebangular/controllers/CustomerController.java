@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -131,7 +131,7 @@ public class CustomerController {
 
         @NotNull
         @Past
-        private Date dateOfBirth;
+        private LocalDate dateOfBirth;
 
         @NotNull
         @Length(min = 1)
@@ -165,11 +165,11 @@ public class CustomerController {
             this.lastName = lastName;
         }
 
-        public Date getDateOfBirth() {
+        public LocalDate getDateOfBirth() {
             return dateOfBirth;
         }
 
-        public void setDateOfBirth(Date dateOfBirth) {
+        public void setDateOfBirth(LocalDate dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
         }
 
@@ -214,7 +214,7 @@ public class CustomerController {
 
         @NotNull
         @Past
-        private Date dateOfBirth;
+        private LocalDate dateOfBirth;
 
         @NotNull
         @Length(min = 1)
@@ -240,11 +240,11 @@ public class CustomerController {
             this.lastName = lastName;
         }
 
-        public Date getDateOfBirth() {
+        public LocalDate getDateOfBirth() {
             return dateOfBirth;
         }
 
-        public void setDateOfBirth(Date dateOfBirth) {
+        public void setDateOfBirth(LocalDate dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
         }
 

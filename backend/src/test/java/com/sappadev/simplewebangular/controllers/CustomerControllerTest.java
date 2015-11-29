@@ -1,12 +1,10 @@
 package com.sappadev.simplewebangular.controllers;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import org.exparity.hamcrest.date.DateMatchers;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sappadev.AbstractContextControllerTests;
+import com.sappadev.simplewebangular.data.dto.CustomerDTO;
+import com.sappadev.simplewebangular.services.CustomerService;
 import org.hamcrest.Matchers;
-import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,10 +14,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sappadev.AbstractContextControllerTests;
-import com.sappadev.simplewebangular.data.dto.CustomerDTO;
-import com.sappadev.simplewebangular.services.CustomerService;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.List;
 
 /**
  * user: sergeil
@@ -40,7 +37,7 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 	@Test
 	@WithMockUser(roles = "USER")
 	public void testGetAllCustomers() throws Exception {
-		final DateTime dateTime = new DateTime(1983, 7, 19, 0, 0, 0, 0);
+		final LocalDate dateTime = LocalDate.of(1983, Month.JULY, 19);
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/customers/"))
 		       .andExpect(MockMvcResultMatchers.status().isOk())
@@ -49,7 +46,7 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 		       .andExpect(MockMvcResultMatchers.jsonPath("$[0].username", Matchers.is("mikew")))
 		       .andExpect(MockMvcResultMatchers.jsonPath("$[0].password", Matchers.is("123")))
 		       .andExpect(MockMvcResultMatchers.jsonPath("$[0].dateOfBirth",
-		                                                 Matchers.is(dateTime.toDate().getTime())));
+		                                                 Matchers.is(dateTime.toString())));
 	}
 
 	@Test
@@ -63,11 +60,10 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 	@Test
 	@WithMockUser("mikew")
 	public void testSaveCustomer() throws Exception {
-		Calendar cal = Calendar.getInstance();
-		cal.set(1999, Calendar.AUGUST, 11);
+		LocalDate localDate = LocalDate.now();
 
 		CustomerController.SaveCustomerRequestJson req = new CustomerController.SaveCustomerRequestJson();
-		req.setDateOfBirth(cal.getTime());
+		req.setDateOfBirth(localDate);
 		req.setFirstName("New firstname");
 		req.setLastName("New lastname");
 		req.setId(2L);
@@ -83,7 +79,7 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.customer.lastName", Matchers.is("New lastname")))
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.customer.username", Matchers.is("New username")))
 			   .andExpect(MockMvcResultMatchers.jsonPath("$.customer.password", Matchers.is("New password")))
-			   .andExpect(MockMvcResultMatchers.jsonPath("$.customer.dateOfBirth", Matchers.is(cal.getTimeInMillis())));
+			   .andExpect(MockMvcResultMatchers.jsonPath("$.customer.dateOfBirth", Matchers.is("")));
 
 		List<CustomerDTO> customers = customerService.getAllCustomers();
 
@@ -94,7 +90,7 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 						Matchers.hasProperty("lastName", Matchers.is("New lastname")),
 						Matchers.hasProperty("username", Matchers.is("New username")),
 						Matchers.hasProperty("password", Matchers.is("New password")),
-						Matchers.hasProperty("dateOfBirth", DateMatchers.sameDay(cal.getTime()))
+						Matchers.hasProperty("dateOfBirth", Matchers.is(""))
 				)
 				));
 
@@ -102,11 +98,10 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 
 	@Test
 	public void testSaveCustomer_unauthorized() throws Exception {
-		Calendar cal = Calendar.getInstance();
-		cal.set(1999, Calendar.AUGUST, 11);
+		LocalDate localDate = LocalDate.now();
 
 		CustomerController.SaveCustomerRequestJson req = new CustomerController.SaveCustomerRequestJson();
-		req.setDateOfBirth(cal.getTime());
+		req.setDateOfBirth(localDate);
 		req.setFirstName("New firstname");
 		req.setLastName("New lastname");
 		req.setId(2L);
@@ -129,7 +124,7 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 						Matchers.hasProperty("lastName", Matchers.is("Patrick")),
 						Matchers.hasProperty("username", Matchers.is("sponge")),
 						Matchers.hasProperty("password", Matchers.is("bob")),
-						Matchers.hasProperty("dateOfBirth", DateMatchers.sameDay(new Date(2001, 1, 2)))
+						Matchers.hasProperty("dateOfBirth", Matchers.is(""))
 				)
 		));
 
@@ -138,26 +133,25 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 	@Test
 	@WithMockUser("mikew")
 	public void testCreateCustomer() throws Exception {
-		Calendar cal = Calendar.getInstance();
-		cal.set(1999, Calendar.AUGUST, 11);
+		LocalDate localDate = LocalDate.now();
 
 		CustomerController.CreateCustomerRequestJson req = new CustomerController.CreateCustomerRequestJson();
-		req.setDateOfBirth(cal.getTime());
+		req.setDateOfBirth(localDate);
 		req.setFirstName("New firstname1");
 		req.setLastName("New lastname1");
 		req.setPassword("New password1");
 		req.setUsername("New username1");
 
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/customers/")
-											  .content(mapper.writeValueAsString(req))
-											  .contentType(MediaType.APPLICATION_JSON))
-			   .andExpect(MockMvcResultMatchers.status().isOk())
-			   .andExpect(MockMvcResultMatchers.jsonPath("$.customer.id", Matchers.notNullValue()))
-			   .andExpect(MockMvcResultMatchers.jsonPath("$.customer.firstName", Matchers.is("New firstname1")))
-			   .andExpect(MockMvcResultMatchers.jsonPath("$.customer.lastName", Matchers.is("New lastname1")))
-			   .andExpect(MockMvcResultMatchers.jsonPath("$.customer.username", Matchers.is("New username1")))
-			   .andExpect(MockMvcResultMatchers.jsonPath("$.customer.password", Matchers.is("New password1")))
-			   .andExpect(MockMvcResultMatchers.jsonPath("$.customer.dateOfBirth", Matchers.is(cal.getTimeInMillis())));
+				.content(mapper.writeValueAsString(req))
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.customer.id", Matchers.notNullValue()))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.customer.firstName", Matchers.is("New firstname1")))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.customer.lastName", Matchers.is("New lastname1")))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.customer.username", Matchers.is("New username1")))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.customer.password", Matchers.is("New password1")))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.customer.dateOfBirth", Matchers.is("")));
 
 		List<CustomerDTO> customers = customerService.getAllCustomers();
 
@@ -168,18 +162,17 @@ public class CustomerControllerTest extends AbstractContextControllerTests {
 						Matchers.hasProperty("lastName", Matchers.is("New lastname1")),
 						Matchers.hasProperty("username", Matchers.is("New username1")),
 						Matchers.hasProperty("password", Matchers.is("New password1")),
-						Matchers.hasProperty("dateOfBirth", DateMatchers.sameDay(cal.getTime()))
+						Matchers.hasProperty("dateOfBirth", Matchers.is(""))
 				)
 		));
 	}
 
 	@Test
 	public void testCreateCustomer_unauthorized() throws Exception {
-		Calendar cal = Calendar.getInstance();
-		cal.set(1999, Calendar.AUGUST, 11);
+		LocalDate localDate = LocalDate.of(1999, Month.AUGUST, 1);
 
 		CustomerController.CreateCustomerRequestJson req = new CustomerController.CreateCustomerRequestJson();
-		req.setDateOfBirth(cal.getTime());
+		req.setDateOfBirth(localDate);
 		req.setFirstName("New firstname1");
 		req.setLastName("New lastname1");
 		req.setPassword("New password1");
