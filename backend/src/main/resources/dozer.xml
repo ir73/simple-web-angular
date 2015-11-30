@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mappings PUBLIC "-//DOZER//DTD MAPPINGS//EN"
+		"http://dozer.sourceforge.net/dtd/dozerbeanmapping.dtd">
+<mappings>
+	<configuration>
+		<copy-by-references>
+
+			<!-- required for Customer.dateOfBirth field, because Dozer will
+				 try to make new LocalDate object via "new" keyword, which is
+				 wrong in Java 8. Instead, the LocalDate object will be passed by reference-->
+			<copy-by-reference>
+				java.time.*
+			</copy-by-reference>
+		</copy-by-references>
+	</configuration>
+</mappings>

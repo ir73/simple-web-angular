@@ -6,11 +6,11 @@ import com.sappadev.simplewebangular.controllers.vo.ResponseJson;
 import com.sappadev.simplewebangular.controllers.vo.SuccessResponseJson;
 import com.sappadev.simplewebangular.data.dto.CustomerDTO;
 import com.sappadev.simplewebangular.services.CustomerService;
+import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,14 +36,14 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/api/customers/", method = RequestMethod.GET)
     public List<CustomerDTO> getAllCustomers() {
         LOGGER.debug("Loading all customers...");
-        return customerService.getAllCustomers();
+        List<CustomerDTO> customerDTOs = customerService.getAllCustomers();
+	    customerDTOs.get(0).getDateOfBirth().toEpochDay();
+	    return customerDTOs;
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/api/customers/{id}", method = RequestMethod.PUT)
     public ResponseJson saveCustomer(@Valid @RequestBody SaveCustomerRequestJson requestJson,
                                      BindingResult errors,
@@ -73,7 +73,6 @@ public class CustomerController {
         return json;
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/api/customers/", method = RequestMethod.POST)
     public ResponseJson createCustomer(@Valid @RequestBody CreateCustomerRequestJson requestJson,
                                      BindingResult errors) {
@@ -108,7 +107,6 @@ public class CustomerController {
         return null;
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/api/customers/{id}", method = RequestMethod.DELETE)
     public ResponseJson deleteCustomer(@PathVariable("id") Long customerId) {
         LOGGER.info("Delete customer: {}", customerId);
@@ -116,6 +114,7 @@ public class CustomerController {
         return new SuccessResponseJson();
     }
 
+    @Data
     static class SaveCustomerRequestJson {
         @NotNull
         @Min(1)
@@ -140,68 +139,9 @@ public class CustomerController {
         @NotNull
         @Length(min = 1)
         private String password;
-
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        public String getLastName() {
-            return lastName;
-        }
-
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
-
-        public LocalDate getDateOfBirth() {
-            return dateOfBirth;
-        }
-
-        public void setDateOfBirth(LocalDate dateOfBirth) {
-            this.dateOfBirth = dateOfBirth;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        @Override
-        public String toString() {
-            return "SaveCustomerRequestJson{" +
-                    "id=" + id +
-                    ", firstName='" + firstName + '\'' +
-                    ", lastName='" + lastName + '\'' +
-                    ", dateOfBirth=" + dateOfBirth +
-                    ", username='" + username + '\'' +
-                    ", password='" + password + '\'' +
-                    '}';
-        }
     }
 
+    @Data
     static class CreateCustomerRequestJson {
 
         @NotNull
@@ -223,71 +163,19 @@ public class CustomerController {
         @NotNull
         @Length(min = 1)
         private String password;
-
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        public String getLastName() {
-            return lastName;
-        }
-
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
-
-        public LocalDate getDateOfBirth() {
-            return dateOfBirth;
-        }
-
-        public void setDateOfBirth(LocalDate dateOfBirth) {
-            this.dateOfBirth = dateOfBirth;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        @Override
-        public String toString() {
-            return "CreateCustomerRequestJson{" +
-                    "firstName='" + firstName + '\'' +
-                    ", lastName='" + lastName + '\'' +
-                    ", dateOfBirth=" + dateOfBirth +
-                    ", username='" + username + '\'' +
-                    ", password='" + password + '\'' +
-                    '}';
-        }
     }
 
+    @Data
     static class SaveCustomerResponseJson extends SuccessResponseJson {
-        public CustomerDTO customer;
+        private CustomerDTO customer;
     }
 
+    @Data
     static class SaveCustomerErrorJson extends ErrorResponseJson {
-
-        public String field;
-
+        private String field;
         public SaveCustomerErrorJson(ErrorCode errorCode) {
             super(errorCode);
         }
-
     }
 
 }

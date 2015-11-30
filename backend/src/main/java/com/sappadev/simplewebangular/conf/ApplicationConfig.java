@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 @Configuration
@@ -50,7 +51,7 @@ public class ApplicationConfig {
 
 	@Bean
 	public Mapper mapper() {
-		return new DozerBeanMapper();
+		return new DozerBeanMapper(Arrays.asList("dozer.xml"));
 	}
 
 }

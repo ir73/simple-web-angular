@@ -2,8 +2,8 @@ package com.sappadev.simplewebangular.controllers;
 
 import com.sappadev.simplewebangular.controllers.vo.ResponseJson;
 import com.sappadev.simplewebangular.controllers.vo.SuccessResponseJson;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
+import com.sappadev.simplewebangular.services.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,21 +17,21 @@ import java.util.Collection;
  */
 public class AuthController {
 
-    @PreAuthorize("isAuthenticated()")
+	@Autowired
+	AuthService authService;
+
     @RequestMapping("/api/user")
     /**
      * Handles user request and replies with logged in information such as
      * roles and user's user name
      */
     public ResponseJson user(Principal principal) {
-        GetUserDetailsResponseJson json = new GetUserDetailsResponseJson();
-        json.username = principal.getName();
-        json.authorities = ((Authentication) principal).getAuthorities();
-        return json;
-    }
+	    Collection<? extends GrantedAuthority> grantedAuthorities
+			    = authService.getAuthorities(principal);
 
-    static class GetUserDetailsResponseJson extends SuccessResponseJson {
-        public String username;
-        public Collection<? extends GrantedAuthority> authorities;
+	    return new SuccessResponseJson() {
+		    public String username = principal.getName();
+		    public Collection<? extends GrantedAuthority> authorities = grantedAuthorities;
+	    };
     }
 }
