@@ -14,15 +14,15 @@
                 },
                 update: {
                     method:'PUT',
-                    commonErrorHandler:true
+                    commonErrorHandler:false
                 },
                 save: {
                     method:'POST',
-                    commonErrorHandler:true
+                    commonErrorHandler:false
                 },
                 delete: {
                     method:'DELETE',
-                    commonErrorHandler:true
+                    commonErrorHandler:false
                 }
 
             });
@@ -53,11 +53,9 @@
                     $scope.resetAll();
                     customer.$delete()
                         .then(function(resultData) {
-                            if (resultData.error == "ERROR") {
-                                $scope.error = $translate.instant("home.errors.delete_error");
-                            } else {
-                                $scope.getAllCustomers();
-                            }
+                            $scope.getAllCustomers();
+                        }, function(resultData) {
+                            $scope.error = $translate.instant("home.errors.delete_error");
                         });
                 };
 
@@ -94,22 +92,18 @@
 
                         promise.then(function (resultData) {
                             $log.info("Saved customer successfully", resultData);
-
-                            if (resultData.response == "ERROR") {
-
-                                var errorField = resultData.field;
-                                var msg = $translate.instant("home.errors.other");
-                                if (errorField) {
-                                    msg = $translate.instant("home.errors." + errorField);
-                                }
-                                $scope.error = msg;
-
-                            } else {
-
-                                $scope.success = $translate.instant("home.success.save");
-                                $scope.getAllCustomers();
-
+                            $scope.success = $translate.instant("home.success.save");
+                            $scope.getAllCustomers();
+                        }, function (resultData) {
+                            $log.info("Saving customer failed", resultData);
+                            // TODO: replace with resultData.data.field in all error
+                            // handlers of http requests
+                            var errorField = resultData.field;
+                            var msg = $translate.instant("home.errors.other");
+                            if (errorField) {
+                                msg = $translate.instant("home.errors." + errorField);
                             }
+                            $scope.error = msg;
                         });
 
                     }, function () {
@@ -131,10 +125,12 @@
                         dateOfBirth: new Date().getTime()
                     };
 
-                $log.info("Opening customer modal dialog", $scope.customer, $scope.newCustomer);
+                $log.info("Opening customer modal dialog", $scope.customer,
+                    $scope.newCustomer);
 
                 $scope.ok = function () {
-                    $uibModalInstance.close({customer:$scope.customer,
+                    $uibModalInstance.close({
+                        customer:$scope.customer,
                         isNewCustomer:$scope.newCustomer
                     });
                 };

@@ -117,7 +117,7 @@
                         <td>{{$index}}</td>
                         <td><a href="" ng-click="onCustomerClick(customer)">{{customer.firstName}}</a></td>
                         <td>{{customer.lastName}}</td>
-                        <td>{{customer.dateOfBirth | date:"dd/MM/yyyy"}}</td>
+                        <td>{{customer.dateOfBirth | date:"mediumDate"}}</td>
                         <td>{{customer.username}}</td>
                         <td translate="home.password.hidden"></td>
                         <td translate="home.actions.delete" ng-click="onCustomerDeleteClick(customer)" class="handCursor"></td>
@@ -138,6 +138,7 @@
 <script src="js/plugins_bower.js"></script>
 <!-- build:js js/home.js -->
 <script src="js/common/common.js"></script>
+<script src="js/common/directives/dateInput.js"></script>
 <script src="js/home/home.js"></script>
 <!-- endbuild -->
 

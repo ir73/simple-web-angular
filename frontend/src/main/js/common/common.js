@@ -29,31 +29,6 @@
             $resourceProvider.defaults.stripTrailingSlashes = false;
         }])
 
-        .directive('dateInput', function() {
-            return {
-                require: 'ngModel',
-                link: function(scope, element, attrs, ngModelController) {
-                    ngModelController.$parsers.push(function(data) {
-                        if (!data) {
-                            return data;
-                        }
-                        return new Date(data).getTime();
-                    });
-
-                    ngModelController.$formatters.push(function(data) {
-                        if (!data) {
-                            return data;
-                        }
-                        var date = new Date(data);
-                        var yyyy = date.getFullYear().toString();
-                        var mm = (date.getMonth()+1).toString(); // getMonth() is zero-based
-                        var dd  = date.getDate().toString();
-                        return (dd[1]?dd:"0"+dd[0]) + "/" + (mm[1]?mm:"0"+mm[0]) + "/" + yyyy;
-                    });
-                }
-            };
-        })
-
         .factory("AuthService", ["$http", "$resource", "$log", function ($http, $resource, $log) {
 
             return {
@@ -99,13 +74,14 @@
                             if (errorData.status == 401) {
                                 $window.location = "/";
                             }
-                        }
 
-                        // if there is an "response=OK/ERROR" field, then let a
-                        // success handler to fire up.
-                        if (errorData.data.response) {
-                            // handle as success
-                            return $q.resolve(errorData);
+                            // for common errors show a generic error
+                            else if (errorData.status >= 400) {
+                                // TODO: add showing a toast
+                                // TODO: try to implement a feture, so that if you
+                                // have an inline handler defined for $q.reject(), then
+                                // no common handler would be triggered
+                            }
                         }
 
                         // handle as success

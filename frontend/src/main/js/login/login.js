@@ -31,18 +31,17 @@
                  */
                 $scope.getUserInfo = function(loginData, showError) {
 
-                    var handler = function (data) {
-                        $log.info("Login result", data, showError);
-
-                        var isSuccess = data.response == "OK";
-                        $scope.setIsAuthenticated(isSuccess);
-
-                        if (showError) {
-                            $scope.hasError = !isSuccess;
-                        }
-                    };
                     AuthService.getUserInfo(loginData)
-                        .then(handler, handler);
+                        .then(function (data) {
+                            $log.info("Login result", data);
+                            $scope.setIsAuthenticated(true);
+                        }, function (data) {
+                            $log.info("Login failed", data, showError);
+                            $scope.setIsAuthenticated(false);
+                            if (showError) {
+                                $scope.hasError = !isSuccess;
+                            }
+                        });
                 };
 
                 /**

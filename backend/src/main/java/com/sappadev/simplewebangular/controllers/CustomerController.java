@@ -1,32 +1,26 @@
 package com.sappadev.simplewebangular.controllers;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-
-import lombok.Data;
-
-import org.hibernate.validator.constraints.Length;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.sappadev.simplewebangular.controllers.vo.ErrorCode;
 import com.sappadev.simplewebangular.controllers.vo.ErrorResponseJson;
 import com.sappadev.simplewebangular.controllers.vo.ResponseJson;
 import com.sappadev.simplewebangular.controllers.vo.SuccessResponseJson;
 import com.sappadev.simplewebangular.data.dto.CustomerDTO;
 import com.sappadev.simplewebangular.services.CustomerService;
+import lombok.Data;
+import org.hibernate.validator.constraints.Length;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 /**
@@ -50,19 +44,23 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/api/customers/{id}", method = RequestMethod.PUT)
-    public ResponseJson saveCustomer(@Valid @RequestBody SaveCustomerRequestJson requestJson,
-                                     BindingResult errors,
-                                     @PathVariable("id") Long customerId) {
+    public ResponseEntity<? extends ResponseJson> saveCustomer(@Valid @RequestBody SaveCustomerRequestJson requestJson,
+                                       BindingResult errors,
+                                       @PathVariable("id") Long customerId) {
         LOGGER.info("Saving customer:{} / {}", customerId, requestJson);
 
         ResponseJson errorJson = handleError(errors);
         if (errorJson != null) {
-            return errorJson;
+            return ResponseEntity
+		            .badRequest()
+		            .body(errorJson);
         }
 
-        if (!customerId.equals(requestJson.getId())) {
-            return new ErrorResponseJson(ErrorCode.INVALID_INPUT);
-        }
+	    if (!customerId.equals(requestJson.getId())) {
+		    return ResponseEntity
+				    .badRequest()
+				    .body(new ErrorResponseJson(ErrorCode.INVALID_INPUT));
+	    }
 
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setDateOfBirth(requestJson.getDateOfBirth());
@@ -74,18 +72,23 @@ public class CustomerController {
         customerDTO = customerService.saveCustomer(customerDTO);
 
         SaveCustomerResponseJson json = new SaveCustomerResponseJson();
-        json.customer = customerDTO;
-        return json;
+	    json.customer = customerDTO;
+
+	    return ResponseEntity
+			    .ok()
+			    .body(json);
     }
 
     @RequestMapping(value = "/api/customers/", method = RequestMethod.POST)
-    public ResponseJson createCustomer(@Valid @RequestBody CreateCustomerRequestJson requestJson,
-                                     BindingResult errors) {
+    public ResponseEntity<? extends ResponseJson> createCustomer(@Valid @RequestBody CreateCustomerRequestJson requestJson,
+                                                       BindingResult errors) {
         LOGGER.info("Creating customer: {}", requestJson);
 
-        ResponseJson errorJson = handleError(errors);
-        if (errorJson != null) {
-            return errorJson;
+	    ResponseJson errorJson = handleError(errors);
+	    if (errorJson != null) {
+		    return ResponseEntity
+				    .badRequest()
+				    .body(errorJson);
         }
 
         CustomerDTO customerDTO = new CustomerDTO();
@@ -98,7 +101,8 @@ public class CustomerController {
 
         SaveCustomerResponseJson json = new SaveCustomerResponseJson();
         json.customer = customerDTO;
-        return json;
+        return ResponseEntity.ok()
+		        .body(json);
     }
 
     private ResponseJson handleError(BindingResult errors) {
