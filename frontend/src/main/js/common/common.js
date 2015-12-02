@@ -30,24 +30,24 @@
         }])
 
         .factory("AuthService", ["$http", "$resource", "$log", function ($http, $resource, $log) {
-
             return {
-                getUserInfo: function(credentials) {
-                    var headers = credentials ? {
-                        authorization : "Basic " +
-                            btoa(credentials.username + ":" +
-                            credentials.password)
-                    } : {};
+                getUserInfo: function(credentials, success, error) {
 
-                    var User = $resource('/api/user', {}, {
+                    var headers = {};
+                    if (credentials) {
+                        headers = {
+                            authorization : "Basic " +
+                            btoa(credentials.username + ":" +
+                                credentials.password)
+                        };
+                    }
+
+                    return $resource('/api/user', {}, {
                         'getUserInfo': {
                             method: "GET",
-                            commonErrorHandler: false,
                             headers:headers
                         }
-                    });
-
-                    return User.getUserInfo().$promise;
+                    }).getUserInfo(success, error);
                 }
             };
         }])
@@ -63,8 +63,8 @@
             };
         }])
 
-        .factory("errorInterceptor", ["$rootScope", "$window", "$log", "$q",
-            function ($rootScope, $window, $log, $q) {
+        .factory("errorInterceptor", ["$rootScope", "$window", "$log", "$q", "API_SERVER_URL",
+            function ($rootScope, $window, $log, $q, API_SERVER_URL) {
                 return {
                     responseError: function (errorData) {
                         // if common exception handler is enabled...
@@ -72,9 +72,8 @@
                             $log.warn("Common error handler interceptor", errorData);
                             // redirect to login on authentication error
                             if (errorData.status == 401) {
-                                $window.location = "/";
+                                $window.location = API_SERVER_URL;
                             }
-
                             // for common errors show a generic error
                             else if (errorData.status >= 400) {
                                 // TODO: add showing a toast

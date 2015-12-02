@@ -6,7 +6,7 @@
         .module("home", ["common"])
 
         .factory("CustomerService", ["$resource", function($resource) {
-            var Customer = $resource("/api/customers/:customerId", {customerId: "@id"}, {
+            return $resource("/api/customers/:customerId", {customerId: "@id"}, {
                 getAll: {
                     method: "GET",
                     isArray: true,
@@ -14,19 +14,15 @@
                 },
                 update: {
                     method:'PUT',
-                    commonErrorHandler:false
                 },
                 save: {
                     method:'POST',
-                    commonErrorHandler:false
                 },
                 delete: {
                     method:'DELETE',
-                    commonErrorHandler:false
                 }
 
             });
-            return Customer;
         }])
 
         .controller("HomeCtrl", ["$scope", "$log", "AuthService", "$location", "$window", "$resource", "CustomerService", "$uibModal", "$translate",

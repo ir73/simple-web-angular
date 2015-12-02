@@ -31,11 +31,12 @@
                  */
                 $scope.getUserInfo = function(loginData, showError) {
 
-                    AuthService.getUserInfo(loginData)
-                        .then(function (data) {
+                    AuthService.getUserInfo(loginData,
+                        function (data) {
                             $log.info("Login result", data);
                             $scope.setIsAuthenticated(true);
-                        }, function (data) {
+                        },
+                        function (data) {
                             $log.info("Login failed", data, showError);
                             $scope.setIsAuthenticated(false);
                             if (showError) {
